@@ -1,0 +1,24 @@
+{"test": [
+    {
+        "name": "Socks",    
+        "age": 2,
+        "favoriteFood": "Cheese",
+        "funFact": "likes to stare at the wall for no reason"
+
+    },
+    {
+        "name": "Pirate",    
+        "age": 1,
+        "favoriteFood": "Milk",
+        "funFact": "Can read minds?"
+
+    },
+    {
+        "name": "Michi",    
+        "age": 3,
+        "favoriteFood": "Watermelon",
+        "funFact": "can sing?"
+
+    }
+]
+}

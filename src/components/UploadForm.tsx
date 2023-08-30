@@ -1,12 +1,17 @@
 import { FormEvent, useState } from "react";
 import { Button } from "./Button";
 import { Label } from "./Label";
+import { Close } from "./Icons";
 
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void;
+  handleEsc: (event: KeyboardEvent) => void;
 }
 
-export const UploadForm = ({ handleActiveForm }: UploadFormProps) => {
+export const UploadForm = ({
+  handleActiveForm,
+  handleEsc,
+}: UploadFormProps) => {
   const [itemForm, setItemForm] = useState({
     catName: "",
     age: "",
@@ -24,9 +29,14 @@ export const UploadForm = ({ handleActiveForm }: UploadFormProps) => {
   };
 
   return (
-    <section className="flex flex-col absolute top-0  py-10  w-4/5 bg-gradient-to-b from-blue-300 to-gray-50 ">
-      <section className="absolute top-0 right-0 ">
-        <Button text="x" isClose handleClick={() => handleActiveForm(false)} />
+    <section className="flex flex-col absolute -top-2  py-10  w-4/5 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg ">
+      <section className="absolute top-0 right-0 mt-3 ">
+        <Button
+          text={<Close />}
+          isClose
+          handleClick={() => handleActiveForm(false)}
+          handleEsc={() => handleEsc}
+        />
       </section>
       <form className="flex flex-col gap-7 items-center" action="#">
         <Label
@@ -62,7 +72,7 @@ export const UploadForm = ({ handleActiveForm }: UploadFormProps) => {
           labelName="image"
           text="Image"
           type="file"
-          isText
+          isImg
         />
 
         <footer>

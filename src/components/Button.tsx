@@ -4,12 +4,13 @@ interface ButtonProps {
   isAdd?: boolean;
   isDelete?: boolean;
   isClose?: boolean;
-  text: string;
+  text: string | React.ReactNode;
   handleClick: () => void;
+  handleEsc?: () => void;
 }
 
 export const Button = (props: ButtonProps) => {
-  const { isAdd, isDelete, text, handleClick, isClose } = props;
+  const { isAdd, isDelete, text, handleClick, isClose, handleEsc } = props;
   return (
     <button
       className={clsx(
@@ -18,6 +19,7 @@ export const Button = (props: ButtonProps) => {
         isClose && "bg-transparent text-red-400 px-5 py-1 rounded-sm"
       )}
       onClick={handleClick}
+      onKeyDown={handleEsc}
     >
       {text}
     </button>

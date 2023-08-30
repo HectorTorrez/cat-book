@@ -7,6 +7,13 @@ import { UploadForm } from "./components/UploadForm";
 export const App = () => {
   const [formIsActive, setFormIsActive] = useState(false);
 
+  const handleEsc = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setFormIsActive(false);
+    }
+  };
+  window.addEventListener("keydown", handleEsc);
+
   const handleActiveForm = (boolean: boolean) => {
     setFormIsActive(boolean);
   };
@@ -19,7 +26,10 @@ export const App = () => {
           return <CatCard key={cat.name} {...cat} />;
         })}
         {formIsActive ? (
-          <UploadForm handleActiveForm={handleActiveForm} />
+          <UploadForm
+            handleActiveForm={handleActiveForm}
+            handleEsc={handleEsc}
+          />
         ) : null}
       </section>
     </section>

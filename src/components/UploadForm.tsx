@@ -1,32 +1,48 @@
-import { FormEvent, useState } from "react";
-import { Button } from "./Button";
-import { Label } from "./Label";
-import { Close } from "./Icons";
+import { type FormEvent, useState } from 'react'
+import { Button } from './Button'
+import { Label } from './Label'
+import { Close } from './Icons'
 
 interface UploadFormProps {
-  handleActiveForm: (boolean: boolean) => void;
-  handleEsc: (event: KeyboardEvent) => void;
+  handleActiveForm: (boolean: boolean) => void
+  handleEsc: (event: KeyboardEvent) => void
 }
 
 export const UploadForm = ({
   handleActiveForm,
-  handleEsc,
-}: UploadFormProps) => {
+  handleEsc
+}: UploadFormProps): JSX.Element => {
   const [itemForm, setItemForm] = useState({
-    catName: "",
-    age: "",
-    favoriteFood: "",
-    funFact: "",
-    image: File,
-  });
+    catName: '',
+    age: '',
+    favoriteFood: '',
+    funFact: '',
+    image: File
+  })
 
   const handleChange = (e: FormEvent<HTMLInputElement>): void => {
-    const { name, value } = e.currentTarget;
+    const { name, value } = e.currentTarget
     setItemForm({
       ...itemForm,
-      [name]: value,
-    });
-  };
+      [name]: value
+    })
+  }
+
+  const handleSubmit = (e: FormEvent): void => {
+    e.preventDefault()
+
+    try {
+      void fetch('http://localhost:3000/catBook', {
+        method: 'POST',
+        body: JSON.stringify(itemForm),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <section className="flex flex-col absolute -top-2  py-10  w-4/5 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg ">
@@ -34,11 +50,15 @@ export const UploadForm = ({
         <Button
           text={<Close />}
           isClose
-          handleClick={() => handleActiveForm(false)}
+          handleClick={() => { handleActiveForm(false) }}
           handleEsc={() => handleEsc}
         />
       </section>
-      <form className="flex flex-col gap-7 items-center" action="#">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-7 items-center"
+        action="#"
+      >
         <Label
           handleChange={handleChange}
           labelName="catName"
@@ -76,9 +96,9 @@ export const UploadForm = ({
         />
 
         <footer>
-          <Button text="Submit" isAdd handleClick={() => console.log("form")} />
+          <Button text="Submit" isAdd handleClick={() => { console.log('form') }} />
         </footer>
       </form>
     </section>
-  );
-};
+  )
+}

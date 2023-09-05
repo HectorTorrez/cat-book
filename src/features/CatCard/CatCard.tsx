@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import { Button } from '../../components/Button'
 import { type Cat } from '../../types/CatTypes'
+import { UploadForm } from '../../components/UploadForm'
 
 export const CatCard = (props: Cat): JSX.Element => {
   const { name, funFact, age, favoriteFood, image, _id } = props
+  const [isActive, setIsActive] = useState(false)
 
   const handleDelete = (id: string): void => {
     try {
@@ -11,6 +14,17 @@ export const CatCard = (props: Cat): JSX.Element => {
       console.log(error)
     }
   }
+
+  const handleActiveForm = (boolean: boolean): void => {
+    setIsActive(boolean)
+  }
+
+  const handleEsc = (event: KeyboardEvent): void => {
+    if (event.key === 'Escape') {
+      setIsActive(false)
+    }
+  }
+  window.addEventListener('keydown', handleEsc)
 
   return (
     <section className="flex flex-col h-[450px] shadow-lg rounded-lg ">
@@ -39,13 +53,24 @@ export const CatCard = (props: Cat): JSX.Element => {
         </p>
       </section>
       <section className="border-t border-black h-[100px] flex justify-between items-center px-3 py-4">
-        <Button handleClick={() => { console.log('Add') }} isAdd text="Edit" />
+        <Button handleClick={() => { handleActiveForm(true) }} isAdd text="Edit" />
         <Button
           isDelete
           text="Delete"
-          handleClick={() => { handleDelete(_id) }}
+          handleClick={() => {
+            handleDelete(_id)
+          }}
         />
       </section>
+      <section className='z-50 absolute left-0 w-full m-auto flex justify-center '>
+      {
+        isActive
+          ? (
+          <UploadForm handleActiveForm={handleActiveForm} handleEsc={handleEsc}/>
+            )
+          : null
+      }
+       </section>
     </section>
   )
 }

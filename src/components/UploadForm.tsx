@@ -6,14 +6,16 @@ import { Close } from './Icons'
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void
   handleEsc: (event: KeyboardEvent) => void
+  isUploadform?: boolean
 }
 
 export const UploadForm = ({
   handleActiveForm,
-  handleEsc
+  handleEsc,
+  isUploadform
 }: UploadFormProps): JSX.Element => {
   const [itemForm, setItemForm] = useState({
-    catName: '',
+    name: '',
     age: '',
     favoriteFood: '',
     funFact: '',
@@ -47,7 +49,7 @@ export const UploadForm = ({
   }
 
   return (
-    <section className="flex flex-col absolute -top-2  py-10  w-4/5 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg ">
+    <section className="flex flex-col  absolute -top-2  py-10  w-4/5 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg ">
       <section className="absolute top-0 right-0 mt-3 ">
         <Button
           text={<Close />}
@@ -63,10 +65,11 @@ export const UploadForm = ({
       >
         <Label
           handleChange={handleChange}
-          labelName="catName"
+          labelName="name"
           text="Cat Name"
           type="text"
           isText
+
         />
         <Label
           handleChange={handleChange}
@@ -89,7 +92,11 @@ export const UploadForm = ({
           type="text"
           isText
         />
-        <Label
+
+        {
+          (isUploadform ?? false)
+            ? (
+             <Label
           handleChange={handleChange}
           labelName="image"
           text="Image"
@@ -97,6 +104,9 @@ export const UploadForm = ({
           isText
           rule = 'Add a valid URL'
         />
+              )
+            : null
+        }
 
         <footer>
           <Button text="Submit" isAdd />

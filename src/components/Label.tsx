@@ -8,6 +8,7 @@ interface LabelProps {
   rule?: string
   isText?: boolean
   isImg?: boolean
+  // inputValue: string
   handleChange: (e: FormEvent<HTMLInputElement>) => void
 }
 
@@ -32,6 +33,10 @@ export const Label = (props: LabelProps): JSX.Element => {
         name={labelName}
         onChange={handleChange}
         placeholder={`Write their ${text}`}
+        required
+        id={labelName}
+        autoComplete='on'
+        // value={inputValue}
       />
       <p className='font-bold text-blue-500 text-sm'>{rule}</p>
     </label>

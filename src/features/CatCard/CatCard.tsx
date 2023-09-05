@@ -5,8 +5,6 @@ export const CatCard = (props: Cat): JSX.Element => {
   const { name, funFact, age, favoriteFood, image, _id } = props
 
   const handleDelete = (id: string): void => {
-    console.log(id)
-    console.log('delete')
     try {
       void fetch(`http://localhost:3000/catBook/${id}`, { method: 'DELETE' })
     } catch (error) {

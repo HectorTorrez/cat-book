@@ -41,6 +41,8 @@ export const UploadForm = ({
       })
     } catch (error) {
       console.error(error)
+    } finally {
+      handleActiveForm(false)
     }
   }
 
@@ -91,12 +93,13 @@ export const UploadForm = ({
           handleChange={handleChange}
           labelName="image"
           text="Image"
-          type="file"
-          isImg
+          type="text"
+          isText
+          rule = 'Add a valid URL'
         />
 
         <footer>
-          <Button text="Submit" isAdd handleClick={() => { console.log('form') }} />
+          <Button text="Submit" isAdd />
         </footer>
       </form>
     </section>

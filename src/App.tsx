@@ -18,7 +18,7 @@ export const App = (): JSX.Element => {
 
   useEffect(() => {
     void getData()
-  }, [])
+  }, [cats])
 
   const handleEsc = (event: KeyboardEvent): void => {
     if (event.key === 'Escape') {

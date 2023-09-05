@@ -1,5 +1,5 @@
 export interface Cat {
-  _id?: string
+  _id: string
   name: string
   age: number
   favoriteFood: string

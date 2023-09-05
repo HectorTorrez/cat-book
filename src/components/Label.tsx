@@ -5,13 +5,14 @@ interface LabelProps {
   labelName: string
   text: string
   type: string
+  rule?: string
   isText?: boolean
   isImg?: boolean
   handleChange: (e: FormEvent<HTMLInputElement>) => void
 }
 
 export const Label = (props: LabelProps): JSX.Element => {
-  const { labelName, text, type, isText, handleChange, isImg } = props
+  const { labelName, text, type, isText, handleChange, isImg, rule } = props
   return (
     <label
       htmlFor={labelName}
@@ -32,6 +33,7 @@ export const Label = (props: LabelProps): JSX.Element => {
         onChange={handleChange}
         placeholder={`Write their ${text}`}
       />
+      <p className='font-bold text-blue-500 text-sm'>{rule}</p>
     </label>
   )
 }

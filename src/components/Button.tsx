@@ -5,7 +5,7 @@ interface ButtonProps {
   isDelete?: boolean
   isClose?: boolean
   text: string | React.ReactNode
-  handleClick: () => void
+  handleClick?: () => void
   handleEsc?: () => void
 }
 

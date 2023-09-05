@@ -2,7 +2,17 @@ import { Button } from '../../components/Button'
 import { type Cat } from '../../types/CatTypes'
 
 export const CatCard = (props: Cat): JSX.Element => {
-  const { name, funFact, age, favoriteFood, image } = props
+  const { name, funFact, age, favoriteFood, image, _id } = props
+
+  const handleDelete = (id: string): void => {
+    console.log(id)
+    console.log('delete')
+    try {
+      void fetch(`http://localhost:3000/catBook/${id}`, { method: 'DELETE' })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <section className="flex flex-col h-[450px] shadow-lg rounded-lg ">
@@ -31,11 +41,11 @@ export const CatCard = (props: Cat): JSX.Element => {
         </p>
       </section>
       <section className="border-t border-black h-[100px] flex justify-between items-center px-3 py-4">
-        <Button handleClick={() => { console.log('Add') }} isAdd text="Add" />
+        <Button handleClick={() => { console.log('Add') }} isAdd text="Edit" />
         <Button
-          handleClick={() => { console.log('delete') }}
           isDelete
           text="Delete"
+          handleClick={() => { handleDelete(_id) }}
         />
       </section>
     </section>

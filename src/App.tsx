@@ -5,6 +5,7 @@ import { UploadForm } from './components/UploadForm'
 import { getCats } from './API/cats'
 import { type Cat } from './types/CatTypes'
 import { Refresh } from './components/Refresh'
+import { usePressEsc } from './utils/hooks/usePressEsc'
 
 export const App = (): JSX.Element => {
   const [formIsActive, setFormIsActive] = useState(false)
@@ -23,12 +24,9 @@ export const App = (): JSX.Element => {
     void getData()
   }, [formIsActive, isLoading])
 
-  const handleEsc = (event: KeyboardEvent): void => {
-    if (event.key === 'Escape') {
-      setFormIsActive(false)
-    }
-  }
-  window.addEventListener('keydown', handleEsc)
+  usePressEsc('Escape', () => {
+    setFormIsActive(false)
+  })
 
   const handleActiveForm = (boolean: boolean): void => {
     setFormIsActive(boolean)
@@ -62,7 +60,7 @@ export const App = (): JSX.Element => {
           ? (
           <UploadForm
             handleActiveForm={handleActiveForm}
-            handleEsc={handleEsc}
+            handleEsc={usePressEsc}
             isUploadform
           />
             )

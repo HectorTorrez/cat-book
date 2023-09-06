@@ -5,7 +5,7 @@ import { Close } from './Icons'
 
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void
-  handleEsc: (event: KeyboardEvent) => void
+  handleEsc: any
   isUploadform?: boolean
 }
 

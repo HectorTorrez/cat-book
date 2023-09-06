@@ -3,28 +3,46 @@ import { Button } from '../../components/Button'
 import { type Cat } from '../../types/CatTypes'
 import { UploadForm } from '../../components/UploadForm'
 
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { usePressEsc } from '../../utils/hooks/usePressEsc'
+const MySwal = withReactContent(Swal)
 export const CatCard = (props: Cat): JSX.Element => {
   const { name, funFact, age, favoriteFood, image, _id } = props
   const [isActive, setIsActive] = useState(false)
 
   const handleDelete = (id: string): void => {
     try {
-      void fetch(`http://localhost:3000/catBook/${id}`, { method: 'DELETE' })
+      void MySwal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          void fetch(`http://localhost:3000/catBook/${id}`, { method: 'DELETE' })
+          void MySwal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
     } catch (error) {
       console.log(error)
     }
   }
 
+  usePressEsc('Escape', () => {
+    setIsActive(false)
+  })
+
   const handleActiveForm = (boolean: boolean): void => {
     setIsActive(boolean)
   }
-
-  const handleEsc = (event: KeyboardEvent): void => {
-    if (event.key === 'Escape') {
-      setIsActive(false)
-    }
-  }
-  window.addEventListener('keydown', handleEsc)
 
   return (
     <section className="flex flex-col h-[450px] shadow-lg rounded-lg ">
@@ -66,7 +84,7 @@ export const CatCard = (props: Cat): JSX.Element => {
       {
         isActive
           ? (
-          <UploadForm handleActiveForm={handleActiveForm} handleEsc={handleEsc}/>
+          <UploadForm handleActiveForm={handleActiveForm} handleEsc={usePressEsc}/>
             )
           : null
       }

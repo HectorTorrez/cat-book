@@ -10,7 +10,7 @@ const MySwal = withReactContent(Swal)
 export const CatCard = (props: Cat): JSX.Element => {
   const { name, funFact, age, favoriteFood, image, _id } = props
   const [isActive, setIsActive] = useState(false)
-
+  const [cat, setCat] = useState({})
   const handleDelete = (id: string): void => {
     try {
       void MySwal.fire({
@@ -44,6 +44,10 @@ export const CatCard = (props: Cat): JSX.Element => {
     setIsActive(boolean)
   }
 
+  const handleSetCat = (object: Cat): void => {
+    setCat(object)
+  }
+
   return (
     <section className="flex flex-col h-[450px] shadow-lg rounded-lg ">
       <article className="w-[250px] transform transition-transform duration-500 ease-in-out hover:scale-110  ">
@@ -71,8 +75,12 @@ export const CatCard = (props: Cat): JSX.Element => {
         </p>
       </section>
       <section className="border-t border-black h-[100px] flex justify-between items-center px-3 py-4">
-        <Button handleClick={() => { handleActiveForm(true) }} isAdd text="Edit" />
+        <Button handleClick={() => {
+          handleActiveForm(true)
+          handleSetCat(props)
+        }} isAdd text="Edit" type='button' />
         <Button
+          type='button'
           isDelete
           text="Delete"
           handleClick={() => {
@@ -84,7 +92,7 @@ export const CatCard = (props: Cat): JSX.Element => {
       {
         isActive
           ? (
-          <UploadForm handleActiveForm={handleActiveForm} handleEsc={usePressEsc}/>
+          <UploadForm handleActiveForm={handleActiveForm} handleEsc={usePressEsc} cat={cat} />
             )
           : null
       }

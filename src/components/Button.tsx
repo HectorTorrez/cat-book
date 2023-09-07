@@ -5,12 +5,13 @@ interface ButtonProps {
   isDelete?: boolean
   isClose?: boolean
   text: string | React.ReactNode
-  handleClick?: () => void
+  handleClick?: (args: any) => any
   handleEsc?: () => void
+  type: 'button' | 'reset' | 'submit'
 }
 
 export const Button = (props: ButtonProps): JSX.Element => {
-  const { isAdd, isDelete, text, handleClick, isClose, handleEsc } = props
+  const { isAdd, isDelete, text, handleClick, isClose, handleEsc, type } = props
   return (
     // eslint-disable-next-line react/react-in-jsx-scope
     <button
@@ -21,6 +22,7 @@ export const Button = (props: ButtonProps): JSX.Element => {
       )}
       onClick={handleClick}
       onKeyDown={handleEsc}
+      type={type}
     >
       {text}
     </button>

@@ -7,10 +7,13 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { usePressEsc } from '../../utils/hooks/usePressEsc'
 const MySwal = withReactContent(Swal)
+
 export const CatCard = (props: Cat): JSX.Element => {
   const { name, funFact, age, favoriteFood, image, _id } = props
+
   const [isActive, setIsActive] = useState(false)
-  const [cat, setCat] = useState({})
+  const [cat, setCat] = useState<Cat>()
+
   const handleDelete = (id: string): void => {
     try {
       void MySwal.fire({
@@ -26,7 +29,7 @@ export const CatCard = (props: Cat): JSX.Element => {
           void fetch(`http://localhost:3000/catBook/${id}`, { method: 'DELETE' })
           void MySwal.fire(
             'Deleted!',
-            'Your file has been deleted.',
+            'Your file has been deleted. Please reload to watch the changes',
             'success'
           )
         }

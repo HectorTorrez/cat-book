@@ -3,6 +3,9 @@ import { Button } from './Button'
 import { Label } from './Label'
 import { Close } from './Icons'
 import { type Cat } from '../types/CatTypes'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
 
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void
@@ -23,7 +26,7 @@ export const UploadForm = ({
     age: 0,
     favoriteFood: '',
     funFact: '',
-    image: File
+    image: ''
   })
 
   const handleChange = (e: FormEvent<HTMLInputElement>): void => {
@@ -35,6 +38,7 @@ export const UploadForm = ({
   }
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
+    console.log('add')
     e.preventDefault()
     if (itemForm.name === '' || itemForm.age === 0 || itemForm.favoriteFood === '' || itemForm.funFact === '' || itemForm.image === null) return
     try {
@@ -49,26 +53,49 @@ export const UploadForm = ({
       console.error(error)
     } finally {
       handleActiveForm(false)
+      void MySwal.fire(
+        'Updated',
+        'Your post has been saved',
+        'success'
+      )
     }
   }
 
-  const handleUpdate = async (): Promise<void> => {
+  const handleUpdate = async (e: FormEvent): Promise<void> => {
+    e.preventDefault()
     try {
-      void fetch(`http://localhost:3000/catBook/${cat._id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(itemForm),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      })
+      if (cat?._id !== undefined) {
+        void fetch(`http://localhost:3000/catBook/${cat._id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(itemForm),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          }
+        })
+      }
     } catch (error) {
       console.log(error)
+    } finally {
+      handleActiveForm(false)
+      void MySwal.fire(
+        'Updated',
+        'The cat was update, please reload the page to watch the changes',
+        'success'
+      )
     }
   }
 
   useEffect(() => {
     if (isUploadform === undefined) {
-      setItemForm(cat)
+      if (cat !== undefined) {
+        setItemForm({
+          name: cat.name,
+          age: cat.age,
+          funFact: cat.funFact,
+          favoriteFood: cat.favoriteFood,
+          image: cat.image
+        })
+      }
     }
   }, [handleActiveForm])
 
@@ -86,7 +113,6 @@ export const UploadForm = ({
       <form
         className="flex flex-col gap-7 items-center"
         action="#"
-        onSubmit={handleSubmit}
       >
         <Label
           handleChange={handleChange}

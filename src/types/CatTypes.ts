@@ -4,5 +4,5 @@ export interface Cat {
   age: number
   favoriteFood: string
   funFact: string
-  image?: string
+  image: string
 }

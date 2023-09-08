@@ -6,6 +6,7 @@ import { UploadForm } from '../../components/UploadForm'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { usePressEsc } from '../../utils/hooks/usePressEsc'
+import { Alert } from '../../components/Alert'
 const MySwal = withReactContent(Swal)
 
 export const CatCard = (props: Cat): JSX.Element => {
@@ -14,7 +15,7 @@ export const CatCard = (props: Cat): JSX.Element => {
   const [isActive, setIsActive] = useState(false)
   const [cat, setCat] = useState<Cat>()
 
-  const handleDelete = (id: string): void => {
+  const handleDelete = async (id: string): Promise<void> => {
     try {
       void MySwal.fire({
         title: 'Are you sure?',
@@ -34,8 +35,8 @@ export const CatCard = (props: Cat): JSX.Element => {
           )
         }
       })
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      await Alert('Error', error.message, 'error')
     }
   }
 
@@ -87,7 +88,7 @@ export const CatCard = (props: Cat): JSX.Element => {
           isDelete
           text="Delete"
           handleClick={() => {
-            handleDelete(_id)
+            void handleDelete(_id)
           }}
         />
       </section>

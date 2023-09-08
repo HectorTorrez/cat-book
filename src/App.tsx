@@ -42,7 +42,7 @@ export const App = (): JSX.Element => {
     <section className="h-screen">
       <Navbar onHandle={handleActiveForm} formIsActive={formIsActive} />
       <Refresh handleRefresh={handleRefresh}/>
-      <section className="grid relative justify-items-center max-w-5xl m-auto sm:grid-cols-1 md:grid-cols-3 mt-10 ">
+      <section className="grid relative justify-items-center max-w-5xl m-auto sm:grid-cols-1 md:grid-cols-3 mt-10 gap-y-10 ">
         {
           isLoading === 'loading'
             ? null

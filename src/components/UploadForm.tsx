@@ -3,9 +3,7 @@ import { Button } from './Button'
 import { Label } from './Label'
 import { Close } from './Icons'
 import { type Cat } from '../types/CatTypes'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
-const MySwal = withReactContent(Swal)
+import { Alert } from './Alert'
 
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void
@@ -38,7 +36,6 @@ export const UploadForm = ({
   }
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
-    console.log('add')
     e.preventDefault()
     if (itemForm.name === '' || itemForm.age === 0 || itemForm.favoriteFood === '' || itemForm.funFact === '' || itemForm.image === null) return
     try {
@@ -49,15 +46,11 @@ export const UploadForm = ({
           'Content-type': 'application/json; charset=UTF-8'
         }
       })
-    } catch (error) {
-      console.error(error)
+    } catch (error: any) {
+      await Alert('Error', error.message, 'error')
     } finally {
       handleActiveForm(false)
-      void MySwal.fire(
-        'Updated',
-        'Your post has been saved',
-        'success'
-      )
+      await Alert('Uploaded', 'Your post was uploaded', 'success')
     }
   }
 
@@ -73,15 +66,11 @@ export const UploadForm = ({
           }
         })
       }
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      await Alert('Error', error.message, 'error')
     } finally {
       handleActiveForm(false)
-      void MySwal.fire(
-        'Updated',
-        'The cat was update, please reload the page to watch the changes',
-        'success'
-      )
+      await Alert('Updated', 'Your post has been saved', 'success')
     }
   }
 

@@ -19,6 +19,7 @@ export const App = (): JSX.Element => {
     }
     setIsLoading('successful')
   }
+
   useEffect(() => {
     void getData()
   }, [formIsActive, isLoading])

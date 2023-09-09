@@ -4,6 +4,7 @@ import { Label } from './Label'
 import { Close } from './Icons'
 import { type Cat } from '../types/CatTypes'
 import { Alert } from './Alert'
+import { useFetch } from '../utils/hooks/useFetch'
 
 interface UploadFormProps {
   handleActiveForm: (boolean: boolean) => void
@@ -27,6 +28,8 @@ export const UploadForm = ({
     image: ''
   })
 
+  const { fetchData, error } = useFetch('http://localhost:3000/catBook', {})
+
   const handleChange = (e: FormEvent<HTMLInputElement>): void => {
     const { name, value } = e.currentTarget
     setItemForm({
@@ -38,17 +41,10 @@ export const UploadForm = ({
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault()
     if (itemForm.name === '' || itemForm.age === 0 || itemForm.favoriteFood === '' || itemForm.funFact === '' || itemForm.image === null) return
-    try {
-      void fetch('http://localhost:3000/catBook', {
-        method: 'POST',
-        body: JSON.stringify(itemForm),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      })
-    } catch (error: any) {
-      await Alert('Error', error.message, 'error')
-    } finally {
+    await fetchData('POST', itemForm, '')
+    if (error != null) {
+      await Alert('Error', error, 'error')
+    } else {
       handleActiveForm(false)
       await Alert('Uploaded', 'Your post was uploaded', 'success')
     }
@@ -56,21 +52,14 @@ export const UploadForm = ({
 
   const handleUpdate = async (e: FormEvent): Promise<void> => {
     e.preventDefault()
-    try {
-      if (cat?._id !== undefined) {
-        void fetch(`http://localhost:3000/catBook/${cat._id}`, {
-          method: 'PATCH',
-          body: JSON.stringify(itemForm),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-          }
-        })
-      }
-    } catch (error: any) {
-      await Alert('Error', error.message, 'error')
-    } finally {
+    if (cat?._id !== undefined) {
+      await fetchData('PATCH', itemForm, cat._id)
+    }
+    if (error != null) {
+      await Alert('Error', error, 'error')
+    } else {
       handleActiveForm(false)
-      await Alert('Updated', 'Your post has been saved', 'success')
+      await Alert('Update', 'Your post has been saved, refresh the page please', 'success')
     }
   }
 

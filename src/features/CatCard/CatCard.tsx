@@ -96,7 +96,7 @@ export const CatCard = (props: Cat): JSX.Element => {
       {
         isActive
           ? (
-          <UploadForm handleActiveForm={handleActiveForm} handleEsc={usePressEsc} cat={cat} />
+          <UploadForm handleActiveForm={handleActiveForm} handleEsc={usePressEsc} cat={cat} formName='Update' />
             )
           : null
       }

@@ -62,6 +62,7 @@ export const App = (): JSX.Element => {
             handleActiveForm={handleActiveForm}
             handleEsc={usePressEsc}
             isUploadform
+            formName='Upload'
           />
             )
           : null}

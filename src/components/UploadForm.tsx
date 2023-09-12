@@ -11,13 +11,15 @@ interface UploadFormProps {
   handleEsc: any
   isUploadform?: boolean
   cat?: Cat
+  formName: string
 }
 
 export const UploadForm = ({
   handleActiveForm,
   handleEsc,
   isUploadform,
-  cat
+  cat,
+  formName
 
 }: UploadFormProps): JSX.Element => {
   const [itemForm, setItemForm] = useState({
@@ -28,6 +30,8 @@ export const UploadForm = ({
     image: ''
   })
 
+  const [isEmpty, setIsEmpty] = useState(false)
+
   const { fetchData, error } = useFetch('http://localhost:3000/catBook', {})
 
   const handleChange = (e: FormEvent<HTMLInputElement>): void => {
@@ -37,10 +41,16 @@ export const UploadForm = ({
       [name]: value
     })
   }
+  useEffect(() => {
+    if (itemForm.name === '' || itemForm.age < 0 || itemForm.favoriteFood === '' || itemForm.funFact === '' || itemForm.image === null) {
+      setIsEmpty(true)
+    } else {
+      setIsEmpty(false)
+    }
+  }, [itemForm])
 
   const handleSubmit = async (e: FormEvent): Promise<void> => {
     e.preventDefault()
-    if (itemForm.name === '' || itemForm.age === 0 || itemForm.favoriteFood === '' || itemForm.funFact === '' || itemForm.image === null) return
     await fetchData('POST', itemForm, '')
     if (error != null) {
       await Alert('Error', error, 'error')
@@ -78,7 +88,7 @@ export const UploadForm = ({
   }, [handleActiveForm])
 
   return (
-    <section className="flex flex-col  absolute -top-2  py-10  w-4/5 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-lg ">
+    <section className="flex flex-col  absolute -top-2  py-10  w-4/5 md:w-[500px]  bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] rounded-2xl border-gray-300 ">
       <section className="absolute top-0 right-0 mt-3 ">
         <Button
           text={<Close />}
@@ -88,8 +98,9 @@ export const UploadForm = ({
           type='button'
         />
       </section>
+      <h3 className='text-center mb-10 font-bold text-3xl'>{formName}</h3>
       <form
-        className="flex flex-col gap-7 items-center"
+        className="flex flex-col gap-12 items-center"
         action="#"
       >
         <Label
@@ -99,6 +110,7 @@ export const UploadForm = ({
           type="text"
           isText
           inputValue={itemForm.name}
+          placeholder='Pepito'
         />
         <Label
           handleChange={handleChange}
@@ -107,7 +119,7 @@ export const UploadForm = ({
           type="text"
           isText
           inputValue={itemForm.age}
-
+          placeholder='10 years'
         />
         <Label
           handleChange={handleChange}
@@ -116,7 +128,7 @@ export const UploadForm = ({
           type="text"
           isText
           inputValue={itemForm.favoriteFood}
-
+          placeholder='Meat'
         />
         <Label
           handleChange={handleChange}
@@ -125,7 +137,7 @@ export const UploadForm = ({
           type="text"
           isText
           inputValue={itemForm.funFact}
-
+          placeholder='Pepito likes to go to the space'
         />
 
         {
@@ -138,6 +150,8 @@ export const UploadForm = ({
           type="text"
           isText
           rule = 'Add a valid URL'
+          inputValue={itemForm.image}
+          placeholder='http://image.com'
         />
               )
             : null
@@ -147,11 +161,11 @@ export const UploadForm = ({
           {
             (isUploadform ?? false)
               ? (
-              <Button text="Submit" type='submit' isAdd handleClick={handleSubmit}/>
+              <Button text="Submit" type='submit' isAdd handleClick={handleSubmit} isEmpty={isEmpty}/>
 
                 )
               : (
-              <Button text="Update" isAdd type='submit' handleClick={handleUpdate} />
+              <Button text="Update" isAdd type='button' handleClick={handleUpdate} isEmpty={isEmpty} />
 
                 )
           }
